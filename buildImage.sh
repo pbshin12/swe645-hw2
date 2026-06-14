@@ -5,6 +5,7 @@ BUILD=false
 TAG="latest"
 PUSH=false
 LOGIN=false
+DOCKER_REPO="frozenmandu/swe645-hw2"
 
 # Note to self: export these env vars for publishing images and for Jenkins to inject PATs inside them
 # DOCKER_USER
@@ -26,12 +27,12 @@ login() {
 
 build() {
     local tag=$1
-    docker build -t frozenmandu/swe645-hw2:${tag} .
+    docker build -t ${DOCKER_REPO}:${tag} .
 }
 
 push() {
     local tag=$1
-    docker push frozenmandu/swe645-hw2:${tag}
+    docker push ${DOCKER_REPO}:${tag}
 }
 
 while getopts "bt:plh" opt; do
