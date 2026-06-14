@@ -1,7 +1,6 @@
 #!/bin/bash
 # Shell script to build the container and tag them
 
-DOCKER_FILE="./Dockerfile"
 BUILD=false
 TAG="latest"
 PUSH=false
@@ -10,7 +9,7 @@ LOGIN=false
 # Note to self: export these env vars for publishing images and for Jenkins to inject PATs inside them
 # DOCKER_USER
 # DOCKER_PASS
-# full build/publish command: ./buildImage.sh -blp -t test
+# full build & publish command: ./buildImage.sh -blp -t test
 
 help() {
     echo "Usage: $0 [-b] [-t <tag>] [-p] [-l]"
@@ -27,7 +26,7 @@ login() {
 
 build() {
     local tag=$1
-    docker build -t frozenmandu/swe645-hw2:${tag} -f ${DOCKER_FILE} .
+    docker build -t frozenmandu/swe645-hw2:${tag} .
 }
 
 push() {
