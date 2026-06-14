@@ -1,0 +1,24 @@
+# Peter Shin (G01073633)
+# Deployment yaml configuration for kubernetes
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hw2-deployment
+  labels:
+    app: hw2
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: hw2
+  template:
+    metadata:
+      labels:
+        app: hw2
+    spec:
+      containers:
+      - name: hw2-container
+        image: frozenmandu/swe645-hw2:hw2
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80
