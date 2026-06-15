@@ -4,17 +4,15 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: hw2-deployment
-  labels:
-    app: hw2
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: hw2
+      run: hw2
   template:
     metadata:
       labels:
-        app: hw2
+        run: hw2
     spec:
       containers:
       - name: hw2-container
