@@ -9,12 +9,17 @@ pipeline {
         DOCKER_REPO = 'frozenmandu/swe645-hw2'
     }
     stages {
+        stage('Checkout') {
+            steps {
+                git branch: 'main', url: 'https://github.com/pbshin12/swe645-hw2.git'
+            }
+        }
         stage('Build') {
             steps {
                 sh 'bash buildImage.sh -b -t ${BUILD_NUMBER}'
             }
         }
-        stage('Push') {
+        stage('Push to Docker Hub') {
             steps {
                 withCredentials([usernamePassword(
                     credentialsId: 'dockerhub-creds',
