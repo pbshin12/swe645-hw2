@@ -46,5 +46,8 @@ pipeline {
         failure {
             echo 'Deployment failed'
         }
+        always {
+            sh 'docker rmi ${DOCKER_REPO}:${BUILD_NUMBER} || true'
+        }
     }
 }
