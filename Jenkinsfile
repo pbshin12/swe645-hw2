@@ -16,17 +16,17 @@ pipeline {
         }
         stage('Build') {
             steps {
-                sh 'bash buildImage.sh -b -t ${BUILD_NUMBER}'
+                script {
+                    dockerImage = docker.build("${DOCKER_REPO}:${BUILD_NUMBER}")
+                }
             }
         }
         stage('Push to Docker Hub') {
             steps {
-                withCredentials([usernamePassword(
-                    credentialsId: 'dockerhub-creds',
-                    usernameVariable: 'DOCKER_USER',
-                    passwordVariable: 'DOCKER_PASS'
-                )]) {
-                    sh 'bash buildImage.sh -b -t ${BUILD_NUMBER} -l -p'
+                script {
+                    docker.withRegistry('https://index.docker.io/v1/', 'dockerhub-creds') {
+                        dockerImage.push()
+                    }
                 }
             }
         }
@@ -35,8 +35,16 @@ pipeline {
                 expression { params.DEPLOY }
             }
             steps {
-                sh 'kubectl set image deployment/hw2-deployment hw2-container=${DOCKER_REPO}:${BUILD_NUMBER}'
+                sh 'kubectl set image deployment/hw2-deployment hw2-container=${DOCKER_REPO}:${BUILD_NUMBER} -n default'
             }
+        }
+    }
+    post {
+        success {
+            echo 'Deployment successful'
+        }
+        failure {
+            echo 'Deployment failed'
         }
     }
 }
