@@ -35,7 +35,9 @@ pipeline {
                 expression { params.DEPLOY }
             }
             steps {
-                sh 'kubectl set image deployment/hw2-deployment hw2-container=${DOCKER_REPO}:${BUILD_NUMBER} -n default'
+                withCredentials([file(credentialsId: 'kubeconfig-id', variable: 'KUBECONFIG')]) {
+                    sh 'kubectl set image deployment/hw2-deployment hw2-container=${DOCKER_REPO}:${BUILD_NUMBER} -n default'
+                }
             }
         }
     }
